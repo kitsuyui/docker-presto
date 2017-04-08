@@ -1,36 +1,22 @@
 # docker-presto
-Facebook Presto docker image for development and testing purposes.
 
-## What's inside
-```
-ubuntu:14.04
- |
- |--- zhicwu/java:8
-       |
-       |--- zhicwu/presto:latest
-```
-* Official Ubuntu Trusty(14.04) docker image
-* Oracle JDK 8 latest release
-* [Facebook Presto](http://prestodb.io/) latest release
+## server
 
-## How to use
-- Pull the image
+```console
+$ docker build . -t my-presto
+$ docker run \
+    --name=my-presto-instance \
+    -h presto \
+    -p 8080:8080 \
+    -v $(pwd)/etc:/presto/etc:Z \
+    -v $(pwd)/data:/presto/data:Z \
+    my-presto
 ```
-# docker pull zhicwu/presto:latest
+
+## client
+
+```console
+$ ./presto-cli --server localhost:8080 --catalog hive --schema default
 ```
-- Setup scripts
-```
-# git clone https://github.com/zhicwu/docker-presto.git
-# cd docker-presto
-# chmod +x *.sh
-```
-- Start Presto
-```
-# ./start-presto.sh
-# docker logs -f my-presto
-...
-# docker exec -it my-presto bash
-# cd /presto
-# ./presto --server presto:8080 --catalog jmx --schema jmx
-presto:jmx> show tables;
-```
+
+Download from: https://prestodb.io/docs/current/installation/cli.html
